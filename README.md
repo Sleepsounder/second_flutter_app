@@ -1,6 +1,7 @@
 # second_flutter_app
 
-A new Flutter project.
+Another educational (for me) Flutter project following this YouTube tutorial:
+- [Flutter Turorial](https://www.youtube.com/watch?v=x0uinJvhNxI)
 
 ## Getting Started
 
