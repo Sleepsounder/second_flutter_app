@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,26 +13,51 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final questions = const [
+  final _questions = const [
     {
       'questionText': 'What is your favorite tea?',
-      'answerText': ['Oolong', 'Yellow', 'Black', 'Green', 'White']
+      'answerText': [
+        {'text': 'Oolong', 'score': 1},
+        {'text': 'Yellow', 'score': 2},
+        {'text': 'Black', 'score': 3},
+        {'text': 'Green', 'score': 4},
+      ]
     },
     {
       'questionText': 'What is your favorite movie?',
-      'answerText': ['Up', 'Downsizing', 'Across The Universe', 'The Overnight']
+      'answerText': [
+        {'text': 'Up', 'score': 1},
+        {'text': 'Downsizing', 'score': 2},
+        {'text': 'Across The Universe', 'score': 3},
+        {'text': 'The Overnight', 'score': 4},
+      ]
     },
     {
       'questionText': 'What is Boones Farm?',
-      'answerText': ['Tea', 'Vacation Home', 'Awful liquor', 'A School in NJ']
+      'answerText': [
+        {'text': 'Tea', 'score': 1},
+        {'text': 'Vacation Home', 'score': 2},
+        {'text': 'Awful liquor', 'score': 3},
+        {'text': 'A School in NJ', 'score': 4},
+      ]
     }
   ];
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore - 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() => _questionIndex = _questionIndex + 1);
     print(_questionIndex);
-    if (_questionIndex < questions.length) {
+    if (_questionIndex < _questions.length) {
       print('More questions!!!');
     } else {
       print('No more questions, yo.');
@@ -46,19 +71,13 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Gucci App'),
         ),
-        body: _questionIndex < questions.length
-            ? Column(
-                children: [
-                  Question(questions[_questionIndex]['questionText']),
-                  ...(questions[_questionIndex]['answerText'] as List<String>)
-                      .map((answer) {
-                    return Answer(_answerQuestion, answer);
-                  }).toList()
-                ],
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
               )
-            : Center(
-                child: Text('You did it!'),
-              ),
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
